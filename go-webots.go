@@ -7,15 +7,23 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strconv"
+	"os/exec"
+	//"strconv"
 	"strings"
 	"sync"
 	//"strings"
 )
 
+func uuid() string {
+	out, err := exec.Command("uuidgen").Output()
+	if err != nil {
+		log.Fatal(err)
+	}
+	return fmt.Sprintf("%s", out)
+}
+
 func main() {
 	var wg sync.WaitGroup
-	i := 0
 	info, err := os.Stdin.Stat()
 	if err != nil {
 		panic(err)
@@ -35,13 +43,12 @@ func main() {
 		}
 		wg.Add(1)
 		go func(url string) {
-			i++
 			defer wg.Done()
+			//var fn string = uuid()
 			tokens := strings.Split(url, "/")
 			fileName := tokens[len(tokens)-1]
 			fmt.Println("Downloading", url, "to", fileName)
-
-			output, err := os.Create("./hospital/" + strconv.Itoa(i) + ".html")
+			output, err := os.Create("./hospital/" + fileName + ".html") // strconv.Itoa(i)
 			if err != nil {
 				log.Fatal("Error while creating", fileName, "-", err)
 			}
