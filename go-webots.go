@@ -13,10 +13,13 @@ import (
 	//"strconv"
 	"strings"
 	"sync"
+	//"time"
 	//"strings"
 )
 
-var i int
+var (
+	maxRoutineNum = 10
+)
 
 func uuid() string {
 	out, err := exec.Command("uuidgen").Output()
@@ -34,6 +37,7 @@ func GetMD5Hash(text string) string {
 
 func main() {
 	var wg sync.WaitGroup
+	ch := make(chan int, maxRoutineNum) //maxRoutineNum = 10
 	info, err := os.Stdin.Stat()
 	if err != nil {
 		panic(err)
@@ -52,7 +56,10 @@ func main() {
 			break
 		}
 		wg.Add(1)
-		i++
+		ch <- 1
+		if len(ch) >= maxRoutineNum {
+			fmt.Println("## ch满了, 处于阻塞")
+		}
 		go func(url string) {
 			defer wg.Done()
 			//var fn string = uuid()
@@ -89,8 +96,10 @@ func main() {
 					fmt.Println("Downloaded", fileName)
 				}
 			}
+			<-ch
 		}(string(url))
 		fmt.Printf("%s\n", url)
+		//time.Sleep(100 * time.Millisecond)
 	}
 	wg.Wait()
 	fmt.Println("Done")
