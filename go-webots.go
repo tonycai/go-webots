@@ -10,11 +10,8 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
-	//"strconv"
 	"strings"
 	"sync"
-	//"time"
-	//"strings"
 )
 
 var (
@@ -57,7 +54,7 @@ func main() {
 		}
 		wg.Add(1)
 		ch <- 1
-		if len(ch) >= maxRoutineNum {
+		if len(ch) >= maxRoutineNum+1 {
 			fmt.Println("## ch满了, 处于阻塞")
 		}
 		go func(url string) {
@@ -99,7 +96,6 @@ func main() {
 			<-ch
 		}(string(url))
 		fmt.Printf("%s\n", url)
-		//time.Sleep(100 * time.Millisecond)
 	}
 	wg.Wait()
 	fmt.Println("Done")
