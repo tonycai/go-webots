@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"crypto/md5"
 	"encoding/hex"
+	"flag"
 	"fmt"
 	"io"
 	"log"
@@ -17,6 +18,23 @@ import (
 var (
 	maxRoutineNum = 10
 )
+
+type stringFlag struct {
+	set   bool
+	value string
+}
+
+func (sf *stringFlag) Set(x string) error {
+	sf.value = x
+	sf.set = true
+	return nil
+}
+
+func (sf *stringFlag) String() string {
+	return sf.value
+}
+
+var directory stringFlag
 
 func uuid() string {
 	out, err := exec.Command("uuidgen").Output()
@@ -32,7 +50,16 @@ func GetMD5Hash(text string) string {
 	return hex.EncodeToString(hasher.Sum(nil))
 }
 
+func init() {
+	flag.Var(&directory, "dir", "The directory")
+}
+
 func main() {
+	var local_files_dir string = "local_files"
+	flag.Parse()
+	if directory.set {
+		local_files_dir = directory.value
+	}
 	var wg sync.WaitGroup
 	ch := make(chan int, maxRoutineNum) //maxRoutineNum = 10
 	info, err := os.Stdin.Stat()
@@ -64,7 +91,7 @@ func main() {
 			fileName := tokens[len(tokens)-1]
 			fmt.Println("Downloading", url, "to", fileName)
 			//output, err := os.Create("./hospital/" + strconv.Itoa(i) + ".html") // strconv.Itoa(i)
-			output, err := os.Create("./hospital/" + GetMD5Hash(url) + ".html") // strconv.Itoa(i)
+			output, err := os.Create("./" + local_files_dir + "/" + GetMD5Hash(url) + ".html") // strconv.Itoa(i)
 			if err != nil {
 				log.Fatal("Error while creating", fileName, "-", err)
 			}
