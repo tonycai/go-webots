@@ -90,7 +90,6 @@ func main() {
 			tokens := strings.Split(url, "/")
 			fileName := tokens[len(tokens)-1]
 			fmt.Println("Downloading", url, "to", fileName)
-			//output, err := os.Create("./hospital/" + strconv.Itoa(i) + ".html") // strconv.Itoa(i)
 			output, err := os.Create("./" + local_files_dir + "/" + GetMD5Hash(url) + ".html") // strconv.Itoa(i)
 			if err != nil {
 				log.Fatal("Error while creating", fileName, "-", err)
