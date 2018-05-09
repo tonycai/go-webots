@@ -2,6 +2,8 @@ package main
 
 import (
 	"bufio"
+	"crypto/md5"
+	"encoding/hex"
 	"fmt"
 	"io"
 	"log"
@@ -14,12 +16,20 @@ import (
 	//"strings"
 )
 
+var i int
+
 func uuid() string {
 	out, err := exec.Command("uuidgen").Output()
 	if err != nil {
 		log.Fatal(err)
 	}
 	return fmt.Sprintf("%s", out)
+}
+
+func GetMD5Hash(text string) string {
+	hasher := md5.New()
+	hasher.Write([]byte(text))
+	return hex.EncodeToString(hasher.Sum(nil))
 }
 
 func main() {
@@ -42,13 +52,15 @@ func main() {
 			break
 		}
 		wg.Add(1)
+		i++
 		go func(url string) {
 			defer wg.Done()
 			//var fn string = uuid()
 			tokens := strings.Split(url, "/")
 			fileName := tokens[len(tokens)-1]
 			fmt.Println("Downloading", url, "to", fileName)
-			output, err := os.Create("./hospital/" + fileName + ".html") // strconv.Itoa(i)
+			//output, err := os.Create("./hospital/" + strconv.Itoa(i) + ".html") // strconv.Itoa(i)
+			output, err := os.Create("./hospital/" + GetMD5Hash(url) + ".html") // strconv.Itoa(i)
 			if err != nil {
 				log.Fatal("Error while creating", fileName, "-", err)
 			}
