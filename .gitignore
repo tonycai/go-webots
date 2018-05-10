@@ -7,3 +7,6 @@
 .DS_Store
 /1.sh
 /hospital
+/local_files1
+/local_files
+/config/database.json
