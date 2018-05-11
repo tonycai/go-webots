@@ -8,7 +8,7 @@ import (
 
 func main() {
 
-	b, err := ioutil.ReadFile("sample.html") // just pass the file name
+	b, err := ioutil.ReadFile("sample.txt") // just pass the file name
 	if err != nil {
 		fmt.Print(err)
 	}
