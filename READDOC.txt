@@ -12,4 +12,6 @@ go get -u -d github.com/rs/xid
 go get -u -d github.com/satori/go.uuid
 go get -u -d github.com/segmentio/ksuid
 go get -u -d github.com/sony/sonyflake
+
 go get -u -d golang.org/x/sys/unix
+go get -u -d github.com/syndtr/goleveldb/leveldb

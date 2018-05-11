@@ -7,7 +7,9 @@ import (
 	"github.com/tkanos/gonfig"
 	"log"
 	"os"
+	"reflect"
 	"strconv"
+	"time"
 )
 
 type Configuration struct {
@@ -45,6 +47,14 @@ func main() {
 		log.Fatal(err.Error())
 	}
 	//fmt.Println(configuration)
+	// insert
+	start := time.Now()
+	values1 := []string{"u_" + start.Format("2006-01-02 15:04:05") + ""}
+	sql1 := "INSERT INTO w_user(user_name) VALUES(?);"
+	last_id := insert_db(db, sql1, values1)
+	fmt.Println("last_id: ", last_id)
+
+	fmt.Println(reflect.TypeOf(db))
 
 	var (
 		id   int
@@ -69,4 +79,35 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	// insert
+	//stmt, err1 := db.Prepare("INSERT w_user SET user_name=?")
+	/*
+		stmt, err1 := db.Prepare("INSERT INTO w_user(user_name) VALUES(?);")
+		if err1 == nil {
+			res, err2 := stmt.Exec("alexa01")
+			if err2 == nil {
+				id, err3 := res.LastInsertId()
+				if err3 == nil {
+				}
+				fmt.Println("last_id: ", id)
+			}
+
+		}
+	*/
+
+}
+func insert_db(db *sql.DB, sql string, values []string) int64 {
+	var last_id int64
+	stmt, err1 := db.Prepare(sql)
+	if err1 == nil {
+		res, err2 := stmt.Exec(values[0])
+		if err2 == nil {
+			id, err3 := res.LastInsertId()
+			if err3 == nil {
+				last_id = id
+			}
+		}
+	}
+	return last_id
 }
