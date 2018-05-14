@@ -102,3 +102,48 @@
 18:08:35.367235 table@build exiting
 18:08:35.367249 table@build revert @22
 18:08:35.367502 db@close done T·539.469µs
+=============== May 14, 2018 (CST) ===============
+15:55:54.014416 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+15:55:54.015570 version@stat F·[4] S·581B[581B] Sc·[1.00]
+15:55:54.015601 db@open opening
+15:55:54.015694 journal@recovery F·1
+15:55:54.016391 journal@recovery recovering @20
+15:55:54.016998 version@stat F·[4] S·581B[581B] Sc·[1.00]
+15:55:54.018287 db@janitor F·6 G·0
+15:55:54.018324 db@open done T·2.704809ms
+15:55:54.018455 table@compaction L0·4 -> L1·0 S·581B Q·16
+15:55:54.020375 db@close closing
+15:55:54.020728 table@build created L1@24 N·6 S·172B "fizz,v9":"fiz..tml,v15"
+15:55:54.020750 table@build exiting
+15:55:54.020766 table@build revert @24
+15:55:54.021007 db@close done T·629.815µs
+=============== May 14, 2018 (CST) ===============
+15:55:59.659411 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+15:55:59.659807 version@stat F·[4] S·581B[581B] Sc·[1.00]
+15:55:59.659838 db@open opening
+15:55:59.659929 journal@recovery F·1
+15:55:59.660513 journal@recovery recovering @22
+15:55:59.661114 version@stat F·[4] S·581B[581B] Sc·[1.00]
+15:55:59.662143 db@janitor F·6 G·0
+15:55:59.662183 db@open done T·2.324011ms
+15:55:59.662307 table@compaction L0·4 -> L1·0 S·581B Q·16
+15:55:59.662638 db@close closing
+15:55:59.663024 table@build created L1@26 N·6 S·172B "fizz,v9":"fiz..tml,v15"
+15:55:59.663048 table@build exiting
+15:55:59.663063 table@build revert @26
+15:55:59.663308 db@close done T·668.286µs
+=============== May 14, 2018 (CST) ===============
+15:57:08.339283 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+15:57:08.339697 version@stat F·[4] S·581B[581B] Sc·[1.00]
+15:57:08.339727 db@open opening
+15:57:08.339814 journal@recovery F·1
+15:57:08.340332 journal@recovery recovering @24
+15:57:08.341841 version@stat F·[4] S·581B[581B] Sc·[1.00]
+15:57:08.344982 db@janitor F·6 G·0
+15:57:08.345026 db@open done T·5.276084ms
+15:57:08.345171 table@compaction L0·4 -> L1·0 S·581B Q·16
+15:57:08.345431 db@close closing
+15:57:08.345841 table@build created L1@28 N·6 S·172B "fizz,v9":"fiz..tml,v15"
+15:57:08.345867 table@build exiting
+15:57:08.345883 table@build revert @28
+15:57:08.346130 db@close done T·697.486µs
