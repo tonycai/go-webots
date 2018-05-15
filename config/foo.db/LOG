@@ -147,3 +147,18 @@
 15:57:08.345867 table@build exiting
 15:57:08.345883 table@build revert @28
 15:57:08.346130 db@close done T·697.486µs
+=============== May 15, 2018 (CST) ===============
+17:33:26.499089 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+17:33:26.501553 version@stat F·[4] S·581B[581B] Sc·[1.00]
+17:33:26.501582 db@open opening
+17:33:26.501673 journal@recovery F·1
+17:33:26.502211 journal@recovery recovering @26
+17:33:26.502677 version@stat F·[4] S·581B[581B] Sc·[1.00]
+17:33:26.504056 db@janitor F·6 G·0
+17:33:26.504104 db@open done T·2.495332ms
+17:33:26.504209 table@compaction L0·4 -> L1·0 S·581B Q·16
+17:33:26.505544 db@close closing
+17:33:26.505906 table@build created L1@30 N·6 S·172B "fizz,v9":"fiz..tml,v15"
+17:33:26.505928 table@build exiting
+17:33:26.505942 table@build revert @30
+17:33:26.506195 db@close done T·650.474µs

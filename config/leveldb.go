@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	db, err := leveldb.OpenFile("./foo.db", nil)
+	db, err := leveldb.OpenFile("../db/webots.db", nil)
 	if err != nil {
 		log.Fatal("Yikes!")
 	}

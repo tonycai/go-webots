@@ -6,9 +6,13 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"github.com/syndtr/goleveldb/leveldb"
+	"github.com/tkanos/gonfig"
 	"io"
 	"io/ioutil"
+	"log"
 	"os"
+	"reflect"
 	"regexp"
 	"sync"
 )
@@ -22,13 +26,23 @@ type Hospital struct {
 	Link string
 }
 
+type Configuration struct {
+	Port     int
+	Host     string
+	Dbname   string
+	User     string
+	Password string
+	Charset  string
+	Leveldb  string
+}
+
 func GetMD5Hash(text string) string {
 	hasher := md5.New()
 	hasher.Write([]byte(text))
 	return hex.EncodeToString(hasher.Sum(nil))
 }
 
-func parser_html(file1 string) {
+func parser_html(file1 string, db *leveldb.DB) {
 
 	b, err := ioutil.ReadFile(file1) // just pass the file name
 	if err != nil {
@@ -63,7 +77,10 @@ func parser_html(file1 string) {
 			fmt.Println(err)
 			return
 		}
+		uuid := GetMD5Hash(base_url + element[1])
+		fmt.Println(string(uuid))
 		fmt.Println(string(hos))
+		save_json(db, string(uuid), string(hos))
 	}
 	/*
 		match := reg.FindAllStringSubmatch(content, -1) //FindAllStringSubmatch会将捕获到的放到子slice
@@ -73,11 +90,35 @@ func parser_html(file1 string) {
 	*/
 
 }
+func get_dbfname() string {
+	configuration := Configuration{}
+	err := gonfig.GetConf("./config/database.json", &configuration)
+	if err != nil {
+		os.Exit(500)
+	}
+	return configuration.Leveldb
+}
 
+func save_json(db *leveldb.DB, k string, v string) bool {
+	// put data
+	err := db.Put([]byte(k), []byte(v), nil)
+	//
+	if err != nil {
+		return false
+	}
+	return true
+}
 func main() {
 	var wg sync.WaitGroup
 	ch := make(chan int, maxRoutineNum) //maxRoutineNum = 10
 
+	dbfname := get_dbfname()
+	db, err := leveldb.OpenFile(dbfname, nil)
+	if err != nil {
+		log.Fatal("openFile: " + dbfname + " error!")
+	}
+	fmt.Println(reflect.TypeOf(db))
+	defer db.Close()
 	reader := bufio.NewReader(os.Stdin)
 
 	for {
@@ -93,7 +134,7 @@ func main() {
 		go func(file string) {
 			defer wg.Done()
 			fmt.Println("Parser: ", file)
-			parser_html(file)
+			parser_html(file, db)
 			<-ch
 		}(string(file1))
 	}
