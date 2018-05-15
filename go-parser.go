@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"crypto/md5"
 	"encoding/hex"
+	"encoding/json"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -15,6 +16,11 @@ import (
 var (
 	maxRoutineNum = 10
 )
+
+type Hospital struct {
+	Name string
+	Link string
+}
 
 func GetMD5Hash(text string) string {
 	hasher := md5.New()
@@ -28,6 +34,7 @@ func parser_html(file1 string) {
 	if err != nil {
 		fmt.Print(err)
 	}
+	base_url := "https://www.guahao.com"
 	content := string(b) // convert content to a 'string'
 
 	/*
@@ -43,13 +50,20 @@ func parser_html(file1 string) {
 	*/
 	//reg := regexp.MustCompile(`(?i:^hello).*Go`)
 	//reg := regexp.MustCompile(`(?mi)<h1[\s\S]*?</h1>`) //忽略大小，非贪婪匹配
-	reg := regexp.MustCompile(`(?mis)<h1.+?href="/hospital.+?">(.+?)</a>.+?</h1>`) //忽略大小，非贪婪匹配
+	reg := regexp.MustCompile(`(?mis)<h1.+?href="(/hospital.+?)">(.+?)</a>.+?</h1>`) //忽略大小，非贪婪匹配
 	//fmt.Printf("%q\n", reg.FindAllString(str, -1))
 	elements := reg.FindAllStringSubmatch(content, -1)
 
 	for i, element := range elements {
-		fmt.Println(i, element[1])
+		fmt.Println(i, base_url+element[1], element[2])
 		fmt.Println("===========")
+		hospital := &Hospital{Name: element[2], Link: element[1]}
+		hos, err := json.Marshal(hospital)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		fmt.Println(string(hos))
 	}
 	/*
 		match := reg.FindAllStringSubmatch(content, -1) //FindAllStringSubmatch会将捕获到的放到子slice
